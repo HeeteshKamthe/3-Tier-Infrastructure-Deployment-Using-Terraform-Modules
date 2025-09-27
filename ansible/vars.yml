@@ -1,0 +1,4 @@
+db_endpoint: "DB_ENDPOINT"
+db_user: "admin"
+db_password: "DB_PASSWORD"
+app_private_ip: "APP_PRIVATE_IP"

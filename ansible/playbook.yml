@@ -1,0 +1,30 @@
+- hosts: web
+become: yes
+tasks:
+- name: Install nginx
+apt:
+name: nginx
+state: present
+update_cache: yes
+
+
+- name: Deploy index.html template (with app private IP)
+template:
+src: templates/index.html.j2
+dest: /var/www/html/index.html
+
+
+- hosts: app
+become: yes
+tasks:
+- name: Install apache and php
+apt:
+name: [apache2, php, php-mysql, curl]
+state: present
+update_cache: yes
+
+
+- name: Deploy submit.php template (with DB connection info)
+template:
+src: templates/submit.php.j2
+dest: /var/www/html/submit.php
