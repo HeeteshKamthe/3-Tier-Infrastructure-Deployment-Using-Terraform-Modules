@@ -1,30 +1,141 @@
-- hosts: web
-become: yes
-tasks:
-- name: Install nginx
-apt:
-name: nginx
-state: present
-update_cache: yes
+---
+- name: Configure Web Tier (NGINX reverse proxy + form)
+  hosts: web
+  become: yes
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Update apt repo
+      apt:
+        update_cache: yes
+
+    - name: Install NGINX and PHP-FPM
+      apt:
+        name:
+          - nginx
+          - php
+          - php-fpm
+        state: present
+
+    - name: Copy form.html to web root
+      copy:
+        src: templates/form.html.j2
+        dest: "/var/www/html/{{ web_index_file }}"
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
+    - name: Configure NGINX as reverse proxy
+      copy:
+        dest: /etc/nginx/sites-available/default
+        content: |
+          server {
+              listen 80;
+              root /var/www/html;
+              index {{ web_index_file }};
+              server_name _;
+
+              location / {
+                  try_files $uri $uri/ =404;
+              }
+
+              location /submit.php {
+                  proxy_pass http://{{ app_private_ip }}/submit.php;
+                  proxy_set_header Host $host;
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+              }
+          }
+
+    - name: Restart NGINX
+      service:
+        name: nginx
+        state: restarted
 
 
-- name: Deploy index.html template (with app private IP)
-template:
-src: templates/index.html.j2
-dest: /var/www/html/index.html
+- name: Configure App Tier (NGINX + PHP backend + RDS)
+  hosts: app
+  become: yes
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Update apt repo
+      apt:
+        update_cache: yes
 
+    - name: Install NGINX, PHP, and MySQL client
+      apt:
+        name:
+          - nginx
+          - php
+          - php-fpm
+          - php-mysql
+          - mysql-client
+        state: present
 
-- hosts: app
-become: yes
-tasks:
-- name: Install apache and php
-apt:
-name: [apache2, php, php-mysql, curl]
-state: present
-update_cache: yes
+    - name: Deploy submit.php with DB connection
+      template:
+        src: templates/submit.php.j2
+        dest: /var/www/html/submit.php
+        owner: www-data
+        group: www-data
+        mode: '0644'
 
+    - name: Configure NGINX for PHP
+      copy:
+        dest: /etc/nginx/sites-available/default
+        content: |
+          server {
+              listen 80 default_server;
+              root /var/www/html;
+              index submit.php index.html;
+              server_name _;
 
-- name: Deploy submit.php template (with DB connection info)
-template:
-src: templates/submit.php.j2
-dest: /var/www/html/submit.php
+              location / {
+                  try_files $uri $uri/ =404;
+              }
+
+              location ~ \.php$ {
+                  include snippets/fastcgi-php.conf;
+                  fastcgi_pass unix:{{ php_fpm_sock }};
+                  fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                  include fastcgi_params;
+              }
+          }
+
+    - name: Copy init.sql to app server
+      copy:
+        src: files/init.sql
+        dest: /tmp/init.sql
+        mode: '0644'
+
+    - name: Initialize database schema
+      shell: |
+        mysql -h {{ db_endpoint }} -u {{ db_username }} -p{{ db_password }} < /tmp/init.sql
+      args:
+        executable: /bin/bash
+
+    - name: Verify that the users table exists in RDS
+      shell: |
+        mysql -h {{ db_endpoint }} -u {{ db_username }} -p{{ db_password }} -D {{ db_name }} -e "SHOW TABLES LIKE 'users';"
+      register: table_check
+      args:
+        executable: /bin/bash
+
+    - name: Debug table check output
+      debug:
+        var: table_check.stdout
+
+    - name: Restart NGINX and PHP-FPM
+      service:
+        name: nginx
+        state: restarted
+      notify:
+        - Restart php-fpm
+
+  handlers:
+    - name: Restart php-fpm
+      service:
+        name: "php{{ php_fpm_version }}-fpm"
+        state: restarted

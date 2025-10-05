@@ -1,4 +1,15 @@
-db_endpoint: "DB_ENDPOINT"
-db_user: "admin"
-db_password: "DB_PASSWORD"
-app_private_ip: "APP_PRIVATE_IP"
+# Database connection
+db_endpoint: "mydb.xxxxx.region.rds.amazonaws.com"
+db_username: "dbadmin"
+db_password: "ChangeMeToAStrongPassword!"
+db_name: "appdb"
+
+# Networking
+app_private_ip: "10.10.2.68"
+
+# PHP-FPM version (check with `ls /run/php/` on Ubuntu instance)
+php_fpm_version: "8.3"
+php_fpm_sock: "/run/php/php{{ php_fpm_version }}-fpm.sock"
+
+# Web tier settings
+web_index_file: "form.html"
