@@ -19,11 +19,11 @@
 
     - name: Copy SSH private key to bastion (web) for proxy use
       copy:
-        src: my-key.pem
+        src: /home/ubuntu/3-Tier-Infrastructure-Deployment-Using-Terraform-Modules/my-key.pem
         dest: /home/ubuntu/my-key.pem
         owner: ubuntu
         group: ubuntu
-        mode: '0600'
+        mode: '0400'
 
     - name: Copy form.html to web root
       copy:
