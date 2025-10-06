@@ -82,8 +82,8 @@ This project provisions and configures a **3-tier web application architecture o
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/<your-username>/3tier-infra.git
-cd 3tier-infra
+git clone https://github.com/HeeteshKamthe/3-Tier-Infrastructure-Deployment-Using-Terraform-Modules.git
+cd 3-Tier-Infrastructure-Deployment-Using-Terraform-Modules
 ```
 
 ### 2. Provision Infrastructure with Terraform
