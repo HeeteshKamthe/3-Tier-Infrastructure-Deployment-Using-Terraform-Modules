@@ -41,7 +41,6 @@ This project provisions and configures a **3-tier web application architecture o
 
   * [Terraform](https://developer.hashicorp.com/terraform/downloads) >= 1.5
   * [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/) >= 2.18
-  * Python 3 with `boto3` and `awscli` configured (`aws configure`)
 * SSH key pair created (`my-key.pem`) and uploaded in AWS
 * Linux/Mac/WSL environment recommended
 
@@ -143,7 +142,7 @@ ansible-playbook -i hosts.ini playbook.yml
 
 ## 🖼️ Architecture Diagram
 
-![3-Tier AWS Architecture](ansible/architecture.png)
+![3-Tier AWS Architecture]()
 
 *(Replace with your actual diagram or use `mermaid` code in README)*
 
@@ -152,11 +151,19 @@ ansible-playbook -i hosts.ini playbook.yml
 ## 📷 Screenshots / 🎥 Demo
 
 * `terraform apply` output
+ <p align="center"> <img src="img/terraform output.jpg" alt="terraform output" width="800"/> </p>
+ 
 * Ansible playbook run (`ok=... changed=...`)
+  <p align="center"> <img src="img/ansible playbook apply.jpg" alt="ansible output" width="800"/> </p>
+  
 * Browser view of `form.html`
+ <p align="center"> <img src="img/forms.html page.jpg" alt="browser forms.html" width="800"/> </p>
+ 
 * Submission success message from `submit.php`
+  <p align="center"> <img src="img/submit.php page.jpg" alt="browser submit.php" width="800"/> </p>
+  
 * RDS table query result
-
+  <p align="center"> <img src="img/database table entry.jpg" alt="RDS table" width="800"/> </p>
 
 ---
 
