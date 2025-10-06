@@ -7,17 +7,30 @@ This project provisions and configures a **3-tier web application architecture o
 ## 📂 Project Structure
 
 ```
-terraform/   → Terraform modules (VPC, EC2, RDS)
-ansible/     → Ansible playbooks and configs
-  ├── hosts.ini
-  ├── playbook.yml
-  ├── vars.yml
-  ├── templates/
-  │   ├── form.html.j2
-  │   └── submit.php.j2
-  └── files/
-      └── init.sql
-README.md    → Project documentation
+3-Tier-Infrastructure-Deployment-Using-Terraform-Modules/
+|
+├──modules/
+│  ├── vpc/
+│  ├── web/
+│  ├── app/
+│  └── rds/
+├── provider.tf
+├── main.tf
+├── variable.tf
+├── terraform.tfvars
+└── output.tf
+|
+├── ansible/
+|   ├── hosts.ini
+│   ├── playbook.yml
+│   ├── vars.yml
+│   └── templates/
+│   |   ├── form.html.j2
+│   |   └── submit.php.j2
+|   └── files
+│       └── init.sql
+|
+├── README.md → Project documentation
 ```
 
 ---
