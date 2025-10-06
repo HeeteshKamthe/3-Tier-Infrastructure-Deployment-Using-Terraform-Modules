@@ -4,6 +4,24 @@ This project provisions and configures a **3-tier web application architecture o
 
 ---
 
+## 📂 Project Structure
+
+```
+terraform/   → Terraform modules (VPC, EC2, RDS)
+ansible/     → Ansible playbooks and configs
+  ├── hosts.ini
+  ├── playbook.yml
+  ├── vars.yml
+  ├── templates/
+  │   ├── form.html
+  │   └── submit.php.j2
+  └── files/
+      └── init.sql
+README.md    → Project documentation
+```
+
+---
+
 ## 📌 Architecture Overview
 
 **Layers:**
@@ -178,23 +196,6 @@ terraform destroy -auto-approve
 
 ---
 
-## 📂 Project Structure
-
-```
-terraform/   → Terraform modules (VPC, EC2, RDS)
-ansible/     → Ansible playbooks and configs
-  ├── hosts.ini
-  ├── playbook.yml
-  ├── vars.yml
-  ├── templates/
-  │   ├── form.html
-  │   └── submit.php.j2
-  └── files/
-      └── init.sql
-README.md    → Project documentation
-```
-
----
 
 ## ⚡ How the System Works
 
