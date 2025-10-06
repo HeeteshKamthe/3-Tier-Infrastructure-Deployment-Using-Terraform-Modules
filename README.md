@@ -114,17 +114,18 @@ Update `ansible/hosts.ini` with Terraform outputs:
 
 ```ini
 [web]
-<WEB_PUBLIC_IP> ansible_user=ubuntu ansible_ssh_private_key_file=~/my-key.pem
+<web-ip> ansible_user=ubuntu ansible_ssh_private_key_file=~/3-Tier-Infrastructure-Deployment-Using-Terraform-Modules/my-key.pem
 
 [app]
-<APP_PRIVATE_IP> ansible_user=ubuntu ansible_ssh_private_key_file=~/my-key.pem \
-  ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -i ~/my-key.pem ubuntu@<WEB_PUBLIC_IP>"'
+<app-ip> ansible_user=ubuntu ansible_ssh_private_key_file=~/3-Tier-Infrastructure-Deployment-Using-Terraform-Modules/my-key.pem \
+ ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -i ~/3-Tier-Infrastructure-Deployment-Using-Terraform-Modules/my-key.pem ubuntu@<web-ip>"'
 ```
 
 Update `ansible/vars.yml` with RDS endpoint and DB credentials:
 
 ```yaml
 db_endpoint: "terraform-xxxx.rds.amazonaws.com"
+db_port: 3306
 db_username: "dbadmin"
 db_password: "your-password"
 db_name: "appdb"
