@@ -13,7 +13,7 @@ ansible/     → Ansible playbooks and configs
   ├── playbook.yml
   ├── vars.yml
   ├── templates/
-  │   ├── form.html
+  │   ├── form.html.j2
   │   └── submit.php.j2
   └── files/
       └── init.sql
