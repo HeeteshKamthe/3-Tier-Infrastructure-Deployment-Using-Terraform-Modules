@@ -37,31 +37,31 @@ This project provisions and configures a **3-tier web application architecture o
 
 ## 📌 Architecture Overview
 
-**Layers:**
+The architecture is divided into three tiers:
 
-* **Networking (Terraform VPC Module)**
+1. **Networking (VPC)**
+   - Custom VPC with public and private subnets across 2 AZs
+   - Internet Gateway for public subnets
+   - NAT Gateway for private subnets
+   - Route Tables and associations
+   - Security Groups and NACLs for isolation
 
-  * Custom VPC with public + private subnets across 2 AZs
-  * Internet Gateway (IGW) for public subnet
-  * NAT Gateway for private subnet
-  * Route tables + security groups for proper traffic control
+2. **Web Tier (Public Subnet)**
+   - EC2 instance in public subnet
+   - NGINX installed
+   - Hosts a basic HTML registration form (`form.html`)
+   - Acts as a **reverse proxy** to forward requests to the App tier
 
-* **Web Tier (Public Subnet)**
+3. **Application Tier (Private Subnet)**
+   - EC2 instance in private subnet
+   - Runs PHP-FPM and NGINX
+   - Hosts `submit.php` which processes form submissions
+   - Connects to the database tier (RDS)
 
-  * EC2 instance with **NGINX**
-  * Serves static HTML registration form (`form.html`)
-  * Acts as reverse proxy to App Tier
-
-* **App Tier (Private Subnet)**
-
-  * EC2 instance with **NGINX + PHP-FPM**
-  * Executes `submit.php` to process form data
-  * Inserts data into RDS
-
-* **Database Tier (Private Subnet)**
-
-  * **Amazon RDS MySQL**
-  * Accessible only from App Tier
+4. **Database Tier (Private Subnet)**
+   - Amazon RDS (MySQL/PostgreSQL)
+   - Accessible only from the App tier
+   - Stores registration form data
 
 ---
 
@@ -69,11 +69,13 @@ This project provisions and configures a **3-tier web application architecture o
 
 * AWS Account with programmatic access (IAM user with EC2, VPC, RDS permissions)
 * Installed locally:
-
   * [Terraform](https://developer.hashicorp.com/terraform/downloads) >= 1.5
   * [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/) >= 2.18
 * SSH key pair created (`my-key.pem`) and uploaded in AWS
 * Linux/Mac/WSL environment recommended
+* Python 3 (for Ansible execution)
+* Git installed
+
 
 ---
 
