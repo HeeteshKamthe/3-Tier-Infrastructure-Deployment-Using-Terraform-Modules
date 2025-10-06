@@ -12,6 +12,14 @@ resource "aws_security_group" "app_sg" {
     security_groups = [var.web_sg_id]
   }
 
+   ingress {
+    description = "Allow web to app"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [var.web_sg_id]
+  }
+
   # SSH for admin (optional)
   #ingress {
   #  from_port   = 22

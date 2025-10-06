@@ -1,11 +1,12 @@
 # Database connection
 db_endpoint: "mydb.xxxxx.region.rds.amazonaws.com"
+db_port: 3306
 db_username: "dbadmin"
 db_password: "ChangeMeToAStrongPassword!"
 db_name: "appdb"
 
 # Networking
-app_private_ip: "10.10.2.68"
+app_private_ip: "app-private-ip"
 
 # PHP-FPM version (check with `ls /run/php/` on Ubuntu instance)
 php_fpm_version: "8.3"
