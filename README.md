@@ -175,11 +175,10 @@ ansible-playbook -i hosts.ini playbook.yml
 
 ![3-Tier AWS Architecture]()
 
-*(Replace with your actual diagram or use `mermaid` code in README)*
 
 ---
 
-## 📷 Screenshots / 🎥 Demo
+## 📷 Screenshots
 
 * `terraform apply` output
  <p align="center"> <img src="img/terraform output.jpg" alt="terraform output" width="800"/> </p>
