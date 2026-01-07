@@ -176,7 +176,7 @@ ansible-playbook -i hosts.ini playbook.yml
 
 ## 🖼️ Architecture Diagram
 
-<p align="center"> <img src="img/3tierarchitecture.jpg" alt="3 tier architecture" width="800"/> </p>
+<p align="center"> <img src="img/3tierarchitecture.png" alt="3 tier architecture" width="800"/> </p>
 
 
 ---
